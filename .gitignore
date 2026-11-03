@@ -1,0 +1,23 @@
+# secrets. ".env*" (not ".env.*") also catches odd names like ".env .local"
+.env*
+!.env.example
+
+# python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# node / next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# editors and os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

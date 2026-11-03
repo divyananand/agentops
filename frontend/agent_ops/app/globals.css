@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* design tokens. every page uses these names (bg-surface, text-muted, border-line...)
+   so the whole app changes theme by swapping these values, not by editing pages */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --line: #e2e5ea;
+  --fg: #11141a;
+  --muted: #5c6578;
+  --faint: #8a93a5;
+  --accent: #4f46e5;
+  --accent-soft: #eef0ff;
+  --accent-fg: #ffffff;
+
+  /* status colours. each status always gets a dot + its word, never colour alone */
+  --ok: #15803d;
+  --err: #c62828;
+  --warn: #a16207;
+  --reject: #e0700a;
+  --idle: #64748b;
+  --info: #2563eb;
+}
+
+/* dark values, written twice: once for "follow the system" and once for the toggle */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0d12;
+    --surface: #12151c;
+    --surface-2: #181c25;
+    --line: #242a37;
+    --fg: #e7e9ef;
+    --muted: #949cb0;
+    --faint: #6b7387;
+    --accent: #818cf8;
+    --accent-soft: #1e2040;
+    --accent-fg: #0b0d12;
+
+    --ok: #4ade80;
+    --err: #f87171;
+    --warn: #fbbf24;
+    --reject: #fb923c;
+    --idle: #94a3b8;
+    --info: #60a5fa;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b0d12;
+  --surface: #12151c;
+  --surface-2: #181c25;
+  --line: #242a37;
+  --fg: #e7e9ef;
+  --muted: #949cb0;
+  --faint: #6b7387;
+  --accent: #818cf8;
+  --accent-soft: #1e2040;
+  --accent-fg: #0b0d12;
+
+  --ok: #4ade80;
+  --err: #f87171;
+  --warn: #fbbf24;
+  --reject: #fb923c;
+  --idle: #94a3b8;
+  --info: #60a5fa;
+}
+
+/* turns the tokens into tailwind classes: bg-surface, text-muted, border-line, bg-ok... */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-ok: var(--ok);
+  --color-err: var(--err);
+  --color-warn: var(--warn);
+  --color-reject: var(--reject);
+  --color-idle: var(--idle);
+  --color-info: var(--info);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* status pill: tinted background made from the status colour itself */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+  color: var(--pill);
+  background: color-mix(in srgb, var(--pill) 13%, transparent);
+}
+.pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--pill);
+}
+
+/* the little pulsing dot that says "this page updates by itself" */
+@keyframes live-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); }
+  70% { box-shadow: 0 0 0 6px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ok);
+  animation: live-pulse 2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
+}
